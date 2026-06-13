@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import psycopg2
 import psycopg2.extras
 import os
@@ -12,21 +12,27 @@ NEON_URL = os.getenv("NEON_URL")
 def get_db_connection():
     return psycopg2.connect(NEON_URL)
 
-def get_tvs():
-    # 1. Open the connection
+def get_tvs(search_query=""):
     conn = get_db_connection()
-    
-    # 2. Use RealDictCursor so the data acts like a Python dictionary (perfect for HTML templates)
     cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     
-    # 3. Write the raw SQL query to fetch all TVs 
-    sql_query = "SELECT * FROM led_tv"
+    # 1. If the user searched for something
+    if search_query:
+        
+        sql_query = """
+            SELECT * FROM led_tv 
+            WHERE product_name ILIKE %s OR brand ILIKE %s;
+        """
+        search_pattern = f"%{search_query}%"
+        cursor.execute(sql_query, (search_pattern, search_pattern))
     
-    # 4. Execute and fetch
-    cursor.execute(sql_query)
+    # 2. If there is NO search query (Default Page Load)
+    else:
+        
+        sql_query = "SELECT * FROM led_tv ORDER BY RANDOM();"
+        cursor.execute(sql_query)
+        
     tv_list = cursor.fetchall()
-    
-    # 5. Always close your connections!
     cursor.close()
     conn.close()
     
@@ -34,11 +40,11 @@ def get_tvs():
 
 @app.route('/store')
 def show_catalog():
-   
-    store_products = get_tvs()
-    print(f"Found {len(store_products)} TVs in the database!")
+    current_search = request.args.get('q', '')
     
-    return render_template('index.html', products=store_products)
+    store_products = get_tvs(current_search)
     
+    return render_template('index.html', products=store_products, search_query=current_search)
+
 if __name__ == '__main__':
     app.run(debug=True)

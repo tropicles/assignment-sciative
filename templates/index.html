@@ -88,7 +88,167 @@
         .buy-btn:hover {
             background-color: #00c7a3;
         }
+
+        .search-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .search-bar {
+        display: flex;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .search-input {
+        flex-grow: 1;
+        padding: 15px 20px;
+        border: 1px solid #ccc;
+        border-right: none;
+        border-radius: 8px 0 0 8px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .search-input:focus {
+        border-color: #00E9BF;
+    }
+
+    .search-btn {
+        padding: 15px 30px;
+        background-color: #00E9BF;
+        border: 1px solid #00E9BF;
+        border-radius: 0 8px 8px 0;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .search-btn:hover {
+        background-color: #00c7a3;
+    }
+    
+    .results-count {
+        text-align: center;
+        color: #7f8c8d;
+        margin-bottom: 20px;
+    }
+
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top of everything */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.6); /* Black with opacity */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Modal Content Box */
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Cool slide-in animation */
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Close Button (The 'X') */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+/* Modal Interior Layout */
+.modal-body {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.modal-main-img {
+    width: 40%;
+    object-fit: contain;
+    border-right: 1px solid #eee;
+    padding-right: 20px;
+}
+
+.modal-details {
+    width: 60%;
+}
+
+.modal-details h2 {
+    margin: 5px 0 15px 0;
+    color: #2c3e50;
+}
+
+.modal-details hr {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 20px 0;
+}
+
+.modal-details p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Make it responsive for mobile phones */
+@media (max-width: 768px) {
+    .modal-body {
+        flex-direction: column;
+    }
+    .modal-main-img {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+    }
+    .modal-details {
+        width: 100%;
+    }
+}
+
     </style>
+    <div class="search-container">
+    <form action="/store" method="GET" class="search-bar">
+        <input type="text" name="q" class="search-input" placeholder="Search by brand or product name..." value="{{ search_query }}">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+</div>
+
+{% if search_query %}
+    <div class="results-count">
+        Found {{ products|length }} results for "{{ search_query }}"
+    </div>
+{% endif %}
 </head>
 <body>
 
@@ -106,13 +266,71 @@
                 
                 <div class="price">₹{{ item.price }}</div>
 
-                <button class="buy-btn">View Details</button>
+               <button class="buy-btn" 
+                data-name="{{ item.product_name }}" 
+                data-brand="{{ item.brand }}" 
+                data-price="{{ item.price }}" 
+                data-rating="{{ item.rating }}" 
+                data-desc="{{ item.description }}" 
+                data-img="{{ item.image_url }}" 
+                onclick="openModal(this)">
+                View Details
+               </button>
+
             </div>
         {% else %}
             <p>No products available right now. Check back later!</p>
         {% endfor %}
 
     </div>
+    <div id="tvModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        
+        <div class="modal-body">
+            <img id="modal-img" src="" alt="TV Image" class="modal-main-img">
+            <div class="modal-details">
+                <div id="modal-brand" class="brand"></div>
+                <h2 id="modal-name"></h2>
+                <div id="modal-rating" class="rating"></div>
+                <div id="modal-price" class="price"></div>
+                <hr>
+                <h3>Description</h3>
+                <p id="modal-desc"></p>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    // 1. Get the modal element
+    const modal = document.getElementById("tvModal");
+
+    // 2. Function to open the modal and inject the specific TV's data
+    function openModal(button) {
+        // Grab data from the button that was clicked
+        document.getElementById("modal-name").innerText = button.getAttribute("data-name");
+        document.getElementById("modal-brand").innerText = button.getAttribute("data-brand");
+        document.getElementById("modal-price").innerText = "₹" + button.getAttribute("data-price");
+        document.getElementById("modal-rating").innerText = "⭐ " + button.getAttribute("data-rating");
+        document.getElementById("modal-desc").innerText = button.getAttribute("data-desc");
+        document.getElementById("modal-img").src = button.getAttribute("data-img");
+
+        // Show the modal
+        modal.style.display = "flex";
+    }
+
+    // 3. Function to close the modal when the "X" is clicked
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    // 4. Close the modal if the user clicks anywhere outside of the white box
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>
