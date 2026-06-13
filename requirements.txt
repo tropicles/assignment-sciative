@@ -1,0 +1,10 @@
+scrapy 
+scrapy-playwright 
+pandas 
+openpyxl
+flask
+flask-cors
+psycopg2-binary
+python-dotenv
+sqlalchemy
+# playwright install

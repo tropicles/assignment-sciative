@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croma TV Catalog</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+
+        /* The Grid Container */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* The Individual Product Card */
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Image Styling */
+        .product-img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        /* Card Elements */
+        .price {
+            font-size: 1.4em;
+            color: #2c3e50;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .brand {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .product-name {
+            font-size: 1em;
+            color: #333;
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+
+        .rating {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .buy-btn {
+            background-color: #00E9BF; /* Croma's accent color */
+            color: black;
+            font-weight: bold;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .buy-btn:hover {
+            background-color: #00c7a3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Our TV Catalog</h1>
+
+    <div class="product-grid">
+        
+        {% for item in products %}
+            <div class="product-card">
+                <img src="{{ item.image_url }}" alt="{{ item.product_name }}" class="product-img">
+                
+                <div class="brand">{{ item.brand }}</div>
+                <h3 class="product-name">{{ item.product_name }}</h3>
+                <div class="rating">⭐ {{ item.rating }}</div>
+                
+                <div class="price">₹{{ item.price }}</div>
+
+                <button class="buy-btn">View Details</button>
+            </div>
+        {% else %}
+            <p>No products available right now. Check back later!</p>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

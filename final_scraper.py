@@ -106,14 +106,14 @@ def main():
     for i in range(len(all_tvs)):
         all_tvs[i]['Catalog_Ranking'] = i + 1
         
-    # Create the DataFrame
+    
     df = pd.DataFrame(all_tvs)
     
-    # Reorder the columns so Ranking is first
+    
     column_order = ['Catalog_Ranking', 'Product_Name', 'Brand', 'Price', 'Rating', 'Description', 'Image_URL']
     df = df[column_order]
     
-    # Save it
+    
     df.to_excel('Croma_LED_TVs_Simple.xlsx', index=False)
     print("Done! Successfully saved", len(all_tvs), "TVs.")
 
