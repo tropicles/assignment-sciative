@@ -7,11 +7,9 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 load_dotenv()
 
-# Get the Neon connection string from the .env file
 NEON_URL = os.getenv("NEON_URL")
 
 def get_db_connection():
-    # Connect to the Neon PostgreSQL database
     return psycopg2.connect(NEON_URL)
 
 def get_tvs():
@@ -21,7 +19,7 @@ def get_tvs():
     # 2. Use RealDictCursor so the data acts like a Python dictionary (perfect for HTML templates)
     cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     
-    # 3. Write the raw SQL query to fetch all TVs and scramble them directly in the database
+    # 3. Write the raw SQL query to fetch all TVs 
     sql_query = "SELECT * FROM led_tv"
     
     # 4. Execute and fetch
@@ -36,11 +34,11 @@ def get_tvs():
 
 @app.route('/store')
 def show_catalog():
-    # Fetch the shuffled data from Neon
+   
     store_products = get_tvs()
     print(f"Found {len(store_products)} TVs in the database!")
-    # Pass it to the HTML template
+    
     return render_template('index.html', products=store_products)
-
+    
 if __name__ == '__main__':
     app.run(debug=True)
