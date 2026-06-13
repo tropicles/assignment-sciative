@@ -138,87 +138,87 @@
         margin-bottom: 20px;
     }
 
-    .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top of everything */
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0, 0, 0, 0.6); /* Black with opacity */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-}
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top of everything */
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0, 0, 0, 0.6); /* Black with opacity */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+        }
 
-/* Modal Content Box */
-.modal-content {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 800px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    animation: slideIn 0.3s ease-out;
-}
+        /* Modal Content Box */
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease-out;
+        }
 
-/* Cool slide-in animation */
-@keyframes slideIn {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+        /* Cool slide-in animation */
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
 
-/* Close Button (The 'X') */
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.2s;
-}
+        /* Close Button (The 'X') */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
 
-.close-btn:hover {
-    color: #333;
-}
+        .close-btn:hover {
+            color: #333;
+        }
 
-/* Modal Interior Layout */
-.modal-body {
-    display: flex;
-    gap: 30px;
-    margin-top: 10px;
-}
+        /* Modal Interior Layout */
+        .modal-body {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
 
-.modal-main-img {
-    width: 40%;
-    object-fit: contain;
-    border-right: 1px solid #eee;
-    padding-right: 20px;
-}
+        .modal-main-img {
+            width: 40%;
+            object-fit: contain;
+            border-right: 1px solid #eee;
+            padding-right: 20px;
+        }
 
-.modal-details {
-    width: 60%;
-}
+        .modal-details {
+            width: 60%;
+        }
 
-.modal-details h2 {
-    margin: 5px 0 15px 0;
-    color: #2c3e50;
-}
+        .modal-details h2 {
+            margin: 5px 0 15px 0;
+            color: #2c3e50;
+        }
 
-.modal-details hr {
-    border: 0;
-    height: 1px;
-    background: #eee;
-    margin: 20px 0;
-}
+        .modal-details hr {
+            border: 0;
+            height: 1px;
+            background: #eee;
+            margin: 20px 0;
+        }
 
-.modal-details p {
-    color: #555;
-    line-height: 1.6;
-}
+        .modal-details p {
+            color: #555;
+            line-height: 1.6;
+        }
 
 /* Make it responsive for mobile phones */
 @media (max-width: 768px) {
@@ -235,20 +235,113 @@
         width: 100%;
     }
 }
+    .controls-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
+    .sort-dropdown {
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        outline: none;
+        cursor: pointer;
+        background-color: white;
+    }
+
+    .sort-dropdown:focus {
+        border-color: #00E9BF;
+    }
+
+        .reset-btn {
+    padding: 15px 20px;
+    background-color: #f1f2f6;
+    color: #e74c3c;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+    .reset-btn:hover {
+        background-color: #ffeaa7;
+        border-color: #e74c3c;
+    }
+
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        .page-btn {
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 2px solid #00E9BF;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover:not(.disabled) {
+            background-color: #00E9BF;
+            color: #000;
+        }
+
+        .page-btn.disabled {
+            border-color: #ccc;
+            color: #aaa;
+            cursor: not-allowed;
+            background-color: #f9f9f9;
+        }
+
+        .page-info {
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
     </style>
-    <div class="search-container">
-    <form action="/store" method="GET" class="search-bar">
-        <input type="text" name="q" class="search-input" placeholder="Search by brand or product name..." value="{{ search_query }}">
-        <button type="submit" class="search-btn">Search</button>
-    </form>
-</div>
+
+        <form action="/store" method="GET" class="controls-container">
+            
+            <div class="search-bar" style="flex-grow: 1; display: flex;">
+                <input type="text" name="q" class="search-input" placeholder="Search by brand or product name..." value="{{ search_query }}">
+                <button type="submit" class="search-btn">Search</button>
+            </div>
+
+            <select name="sort" class="sort-dropdown" onchange="this.form.submit()">
+                <option value="ranking" {% if current_sort == 'ranking' %}selected{% endif %}>🏆 Catalog Ranking</option>
+                <option value="price_low" {% if current_sort == 'price_low' %}selected{% endif %}>💰 Lowest Price</option>
+                <option value="top_rated" {% if current_sort == 'top_rated' %}selected{% endif %}>⭐ Top Rated</option>
+            </select>
+            
+            {% if search_query or current_sort != 'ranking' %}
+                <a href="/store" class="reset-btn">✖ Clear</a>
+            {% endif %}
+            
+        </form>
 
 {% if search_query %}
     <div class="results-count">
         Found {{ products|length }} results for "{{ search_query }}"
     </div>
 {% endif %}
+
 </head>
 <body>
 
@@ -283,6 +376,27 @@
         {% endfor %}
 
     </div>
+            <div class="pagination">
+            
+            {% if current_page > 1 %}
+                <a href="/store?q={{ search_query }}&sort={{ current_sort }}&page={{ current_page - 1 }}" class="page-btn">
+                    &larr; Previous
+                </a>
+            {% else %}
+                <span class="page-btn disabled">&larr; Previous</span>
+            {% endif %}
+
+            <span class="page-info">Page {{ current_page }} of {{ total_pages }}</span>
+
+            {% if current_page < total_pages %}
+                <a href="/store?q={{ search_query }}&sort={{ current_sort }}&page={{ current_page + 1 }}" class="page-btn">
+                    Next &rarr;
+                </a>
+            {% else %}
+                <span class="page-btn disabled">Next &rarr;</span>
+            {% endif %}
+
+        </div>
     <div id="tvModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>

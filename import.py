@@ -10,5 +10,4 @@ df.columns = df.columns.str.lower()
 NEON_URL = os.getenv("NEON_URL")
 engine = create_engine(NEON_URL)
 df.to_sql('led_tv', engine, if_exists='append', index=False)
-
 print("All data is now live on Neon.")
