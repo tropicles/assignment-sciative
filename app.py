@@ -13,59 +13,76 @@ NEON_URL = os.getenv("NEON_URL")
 def get_db_connection():
     return psycopg2.connect(NEON_URL)
 
-def get_tvs(search_query="", sort_by="ranking", page=1, per_page=12):
+def get_tvs(search_query="", sort_by="ranking", page=1, per_page=12): 
+    """
+    Returns list of tvs and total pages (total rows/products per page) to be created
+    after fetching values from html url this function gets called
+    the url looks like this 
+    /store?q={searched value}&sort={ current_sort }&page={current page number}
+    
+    """
+
+
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     
-    # 1. Sort Logic
+    # 1. Sort keys with respective values
     sort_options = {
         "price_low": "ORDER BY price ASC",
         "ranking": "ORDER BY catalog_ranking ASC",
         "top_rated": "ORDER BY rating DESC"
     }
-    order_clause = sort_options.get(sort_by, "ORDER BY catalog_ranking ASC")
-    
-    # Pagination Math
+     
+
+    #if sort_by has different key then select its value from sort_options dictionary
+    #else default sorting is ordering by catalog_ranking 
+
+    order_clause = sort_options.get(sort_by, "ORDER BY catalog_ranking ASC") 
+
+
+    # Pagination Math for after how much records to skip in DB 
     offset = (page - 1) * per_page
     
     where_clause = ""
     params = []
     
-    # 2. Search Logic
+    # 2. Search Logic if search_query inputed in search box then search for that keyword in product_name and brand
+    # the default value of search query is an empty string
     if search_query:
         where_clause = "WHERE product_name ILIKE %s OR brand ILIKE %s"
         search_pattern = f"%{search_query}%"
-        params = [search_pattern, search_pattern]
+        params = [search_pattern, search_pattern] # these are variables to be set in place of '%s' (its to prevent sql injection)
         
-    # 3. Get TOTAL count of matching TVs (so we know how many pages to make)
-    count_query = f"SELECT COUNT(*) as total FROM led_tv {where_clause};"
+    # 3. Get TOTAL count of matching TVs (so we know how many pages to make) 
+    count_query = f"SELECT COUNT(*) as total FROM led_tv {where_clause};" # for displaying additional frontend data
     cursor.execute(count_query, tuple(params))
-    total_items = cursor.fetchone()['total']
+    total_items = cursor.fetchone()['total'] 
     
-    # 4. Get the ACTUAL data for just this page
+    # 4. Get the ACTUAL data for just this page (final query) , all of the data is selected
     data_query = f"""
         SELECT * FROM led_tv 
         {where_clause} 
         {order_clause} 
         LIMIT %s OFFSET %s;
     """
-    # Combine the search parameters with the pagination numbers
-    data_params = params + [per_page, offset]
+    # Combine the search parameters with the pagination numbers , default value of per_page is 12 (12 products per page)
+    #rest of param can stay empty
+    data_params = params + [per_page, offset] 
     cursor.execute(data_query, tuple(data_params))
     
-    tv_list = cursor.fetchall()
+    tv_list = cursor.fetchall()  #fetch all obtained data
     cursor.close()
     conn.close()
     
     # Calculate how many pages there are in total
-    total_pages = math.ceil(total_items / per_page)
+    total_pages = math.ceil(total_items / per_page) #for users to see total pages
     
     return tv_list, total_pages
 
 @app.route('/store')
 def show_catalog():
-    current_search = request.args.get('q', '')
-    current_sort = request.args.get('sort', 'ranking')
+    current_search = request.args.get('q', '')   #this would fetch search query from url
+    current_sort = request.args.get('sort', 'ranking') #this would fetch sorting from url
     
     # Safely get the page number from the URL, default to 1
     try:
@@ -75,7 +92,7 @@ def show_catalog():
     except ValueError:
         current_page = 1
         
-    # Pass everything to our new function
+    # Pass everything to our new function 
     store_products, total_pages = get_tvs(current_search, current_sort, current_page)
     
     return render_template('index.html', 

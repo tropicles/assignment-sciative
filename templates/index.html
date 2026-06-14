@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Croma TV Catalog</title>
+
     <style>
+
         /* Basic page styling */
         body {
             font-family: Arial, sans-serif;
@@ -93,18 +97,18 @@
         display: flex;
         justify-content: center;
         margin-bottom: 30px;
-    }
+        }
 
-    .search-bar {
+        .search-bar {
         display: flex;
         width: 100%;
         max-width: 600px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         border-radius: 8px;
         overflow: hidden;
-    }
+        }
 
-    .search-input {
+        .search-input {
         flex-grow: 1;
         padding: 15px 20px;
         border: 1px solid #ccc;
@@ -112,13 +116,13 @@
         border-radius: 8px 0 0 8px;
         font-size: 16px;
         outline: none;
-    }
+        }
 
-    .search-input:focus {
+        .search-input:focus {
         border-color: #00E9BF;
-    }
+        }
 
-    .search-btn {
+        .search-btn {
         padding: 15px 30px;
         background-color: #00E9BF;
         border: 1px solid #00E9BF;
@@ -126,17 +130,17 @@
         font-weight: bold;
         cursor: pointer;
         transition: background 0.2s;
-    }
+        }
 
-    .search-btn:hover {
+        .search-btn:hover {
         background-color: #00c7a3;
-    }
+        }
     
-    .results-count {
+        .results-count {
         text-align: center;
         color: #7f8c8d;
         margin-bottom: 20px;
-    }
+        }
 
         .modal {
             display: none; /* Hidden by default */
@@ -220,22 +224,22 @@
             line-height: 1.6;
         }
 
-/* Make it responsive for mobile phones */
-@media (max-width: 768px) {
-    .modal-body {
-        flex-direction: column;
-    }
-    .modal-main-img {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 20px;
-    }
-    .modal-details {
-        width: 100%;
-    }
-}
-    .controls-container {
+        /* Make it responsive for mobile phones */
+        @media (max-width: 768px) {
+            .modal-body {
+                flex-direction: column;
+            }
+            .modal-main-img {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 20px;
+            }
+            .modal-details {
+                width: 100%;
+            }
+        }
+        .controls-container {
         display: flex;
         justify-content: center;
         gap: 15px;
@@ -243,9 +247,9 @@
         max-width: 800px;
         margin-left: auto;
         margin-right: auto;
-    }
+        }
 
-    .sort-dropdown {
+        .sort-dropdown {
         padding: 15px;
         border: 1px solid #ccc;
         border-radius: 8px;
@@ -253,29 +257,29 @@
         outline: none;
         cursor: pointer;
         background-color: white;
-    }
+        }
 
-    .sort-dropdown:focus {
+        .sort-dropdown:focus {
         border-color: #00E9BF;
-    }
+        }
 
         .reset-btn {
-    padding: 15px 20px;
-    background-color: #f1f2f6;
-    color: #e74c3c;
-    border: 1px solid #dcdde1;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    transition: all 0.2s;
-}
+        padding: 15px 20px;
+        background-color: #f1f2f6;
+        color: #e74c3c;
+        border: 1px solid #dcdde1;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s;
+        }
 
-    .reset-btn:hover {
+        .reset-btn:hover {
         background-color: #ffeaa7;
         border-color: #e74c3c;
-    }
+        }
 
 
 
@@ -317,104 +321,125 @@
         }
     </style>
 
-        <form action="/store" method="GET" class="controls-container">
-            
-            <div class="search-bar" style="flex-grow: 1; display: flex;">
-                <input type="text" name="q" class="search-input" placeholder="Search by brand or product name..." value="{{ search_query }}">
-                <button type="submit" class="search-btn">Search</button>
-            </div>
+    <!-- Form for search and sorting query -->
+     Submit the values of search bar and selected 
+    <form action="/store" method="GET" class="controls-container">
+        
+        <div class="search-bar" style="flex-grow: 1; display: flex;">
+            <input type="text" name="q" class="search-input" placeholder="Search by brand or product name..." value="{{ search_query }}">
+            <button type="submit" class="search-btn">Search</button>
+        </div>
 
-            <select name="sort" class="sort-dropdown" onchange="this.form.submit()">
-                <option value="ranking" {% if current_sort == 'ranking' %}selected{% endif %}>🏆 Catalog Ranking</option>
-                <option value="price_low" {% if current_sort == 'price_low' %}selected{% endif %}>💰 Lowest Price</option>
-                <option value="top_rated" {% if current_sort == 'top_rated' %}selected{% endif %}>⭐ Top Rated</option>
-            </select>
-            
-            {% if search_query or current_sort != 'ranking' %}
-                <a href="/store" class="reset-btn">✖ Clear</a>
-            {% endif %}
-            
-        </form>
-
-{% if search_query %}
-    <div class="results-count">
-        Found {{ products|length }} results for "{{ search_query }}"
-    </div>
-{% endif %}
+        <select name="sort" class="sort-dropdown" onchange="this.form.submit()">
+            <option value="ranking" {% if current_sort == 'ranking' %}selected{% endif %}>🏆 Catalog Ranking</option>
+            <option value="price_low" {% if current_sort == 'price_low' %}selected{% endif %}>💰 Lowest Price</option>
+            <option value="top_rated" {% if current_sort == 'top_rated' %}selected{% endif %}>⭐ Top Rated</option>
+        </select>
+        
+        {% if search_query or current_sort != 'ranking' %}
+            <a href="/store" class="reset-btn">✖ Clear</a>
+        {% endif %}
+        
+    </form>
+    
+    {% if search_query %}
+        <div class="results-count">
+            Found {{ products|length }} results for "{{ search_query }}"
+        </div>
+    {% endif %}
 
 </head>
+
+
 <body>
 
     <h1>Our TV Catalog</h1>
-
+    
+    <!-- List of products UI -->
     <div class="product-grid">
-        
-        {% for item in products %}
+        <!-- product variable recieved from backend is iterated until product cards of each product is created -->
+        {% for item in products %} 
             <div class="product-card">
+
                 <img src="{{ item.image_url }}" alt="{{ item.product_name }}" class="product-img">
-                
                 <div class="brand">{{ item.brand }}</div>
                 <h3 class="product-name">{{ item.product_name }}</h3>
                 <div class="rating">⭐ {{ item.rating }}</div>
-                
                 <div class="price">₹{{ item.price }}</div>
+                
+                <!-- each button created holds a button of its respective product data -->
+                <button class="buy-btn" 
+                    data-name="{{ item.product_name }}" 
+                    data-brand="{{ item.brand }}" 
+                    data-price="{{ item.price }}" 
+                    data-rating="{{ item.rating }}" 
+                    data-desc="{{ item.description }}" 
+                    data-img="{{ item.image_url }}" 
+                    onclick="openModal(this)">  <!-- on clicking this button run the openModal() function -->
+                    View Details
+                </button> 
 
-               <button class="buy-btn" 
-                data-name="{{ item.product_name }}" 
-                data-brand="{{ item.brand }}" 
-                data-price="{{ item.price }}" 
-                data-rating="{{ item.rating }}" 
-                data-desc="{{ item.description }}" 
-                data-img="{{ item.image_url }}" 
-                onclick="openModal(this)">
-                View Details
-               </button>
-
-            </div>
+            </div>  
         {% else %}
             <p>No products available right now. Check back later!</p>
         {% endfor %}
+    </div>
+     
+    <!-- Pagination and previous,next button handling -->
+    <div class="pagination">
+        
+        <!-- This handles the previous and next button -->
+
+        <!-- 
+        If current_page value is greater than 1 then redirect to a url with &page={current_page - 1} 
+        else previous button is disabled 
+        -->
+        {% if current_page > 1 %}
+            <a href="/store?q={{ search_query }}&sort={{ current_sort }}&page={{ current_page - 1 }}" class="page-btn">
+                &larr; Previous
+            </a>
+        {% else %}
+            <span class="page-btn disabled">&larr; Previous</span>
+        {% endif %}
+        
+
+        <span class="page-info">Page {{ current_page }} of {{ total_pages }}</span>
+        
+        <!-- 
+        If current_page value is less than total_pages then redirect to a url with &page={current_page + 1} 
+        else next button is disabled  
+        -->
+        {% if current_page < total_pages %}
+            <a href="/store?q={{ search_query }}&sort={{ current_sort }}&page={{ current_page + 1 }}" class="page-btn">
+                Next &rarr;
+            </a>
+        {% else %}
+            <span class="page-btn disabled">Next &rarr;</span>
+        {% endif %}
 
     </div>
-            <div class="pagination">
-            
-            {% if current_page > 1 %}
-                <a href="/store?q={{ search_query }}&sort={{ current_sort }}&page={{ current_page - 1 }}" class="page-btn">
-                    &larr; Previous
-                </a>
-            {% else %}
-                <span class="page-btn disabled">&larr; Previous</span>
-            {% endif %}
-
-            <span class="page-info">Page {{ current_page }} of {{ total_pages }}</span>
-
-            {% if current_page < total_pages %}
-                <a href="/store?q={{ search_query }}&sort={{ current_sort }}&page={{ current_page + 1 }}" class="page-btn">
-                    Next &rarr;
-                </a>
-            {% else %}
-                <span class="page-btn disabled">Next &rarr;</span>
-            {% endif %}
-
-        </div>
+    
+    <!-- Modal Body -->
     <div id="tvModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        
-        <div class="modal-body">
-            <img id="modal-img" src="" alt="TV Image" class="modal-main-img">
-            <div class="modal-details">
-                <div id="modal-brand" class="brand"></div>
-                <h2 id="modal-name"></h2>
-                <div id="modal-rating" class="rating"></div>
-                <div id="modal-price" class="price"></div>
-                <hr>
-                <h3>Description</h3>
-                <p id="modal-desc"></p>
+
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            
+            <div class="modal-body">
+                <img id="modal-img" src="" alt="TV Image" class="modal-main-img">
+                <div class="modal-details">
+                    <div id="modal-brand" class="brand"></div>
+                    <h2 id="modal-name"></h2>
+                    <div id="modal-rating" class="rating"></div>
+                    <div id="modal-price" class="price"></div>
+                    <hr>
+                    <h3>Description</h3>
+                    <p id="modal-desc"></p>
+                </div>
             </div>
         </div>
+
     </div>
-</div>
 
 <script>
     // 1. Get the modal element
@@ -429,7 +454,6 @@
         document.getElementById("modal-rating").innerText = "⭐ " + button.getAttribute("data-rating");
         document.getElementById("modal-desc").innerText = button.getAttribute("data-desc");
         document.getElementById("modal-img").src = button.getAttribute("data-img");
-
         // Show the modal
         modal.style.display = "flex";
     }
@@ -445,6 +469,9 @@
             modal.style.display = "none";
         }
     }
+
+
 </script>
+
 </body>
 </html>
